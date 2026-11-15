@@ -3,15 +3,18 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const connection = process.env.DATABASE_URL
-  ? { connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }
+const databaseUrl = process.env.DATABASE_URL;
+const urlRequiresSsl = databaseUrl && /[?&]sslmode=(require|verify-ca|verify-full)(?:&|$)/i.test(databaseUrl);
+const useSsl = process.env.PGSSLMODE === 'require' || urlRequiresSsl;
+const connection = databaseUrl
+  ? { connectionString: databaseUrl, ...(useSsl ? { ssl: { rejectUnauthorized: false } } : {}) }
   : {
       host: process.env.PGHOST || 'localhost',
       port: Number(process.env.PGPORT || 5432),
       user: process.env.PGUSER || 'postgres',
       password: process.env.PGPASSWORD || '',
       database: process.env.PGDATABASE || 'perricos',
-      ...(process.env.PGSSLMODE === 'require' ? { ssl: { rejectUnauthorized: false } } : {}),
+      ...(useSsl ? { ssl: { rejectUnauthorized: false } } : {}),
     };
 
 const pool = new pg.Pool({

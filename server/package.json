@@ -11,6 +11,7 @@
     "db:migrate:features": "node database/migrate_features.js",
     "db:prepare:hosted": "node database/prepare_hosted.js",
     "db:copy:hosted": "node database/copy_hosted_data.js",
+    "db:copy:catalog": "node database/copy_catalog_to_hosted.js",
     "storage:migrate": "node database/migrate_uploaded_images.js"
   },
   "dependencies": {

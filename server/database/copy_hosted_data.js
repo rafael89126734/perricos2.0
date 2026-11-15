@@ -16,7 +16,8 @@ const source = new pg.Pool({
 });
 const targetUrl = process.env.HOSTED_DATABASE_URL;
 if (!targetUrl) throw new Error('Define HOSTED_DATABASE_URL localmente para copiar datos; no la subas a Git.');
-const target = new pg.Pool({ connectionString: targetUrl, ssl: { rejectUnauthorized: false } });
+const targetNeedsSsl = process.env.PGSSLMODE === 'require' || /[?&]sslmode=(require|verify-ca|verify-full)(?:&|$)/i.test(targetUrl);
+const target = new pg.Pool({ connectionString: targetUrl, ...(targetNeedsSsl ? { ssl: { rejectUnauthorized: false } } : {}) });
 const tables = ['categorias', 'usuarios', 'productos', 'ventas', 'ofertas', 'sugerencias'];
 
 try {
