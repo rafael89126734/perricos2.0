@@ -1,0 +1,25 @@
+{
+  "name": "perricos-server",
+  "version": "1.0.0",
+  "description": "API para Perricos — tienda de mascotas con PostgreSQL",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "db:init": "node database/init.js",
+    "db:migrate:features": "node database/migrate_features.js",
+    "db:prepare:hosted": "node database/prepare_hosted.js",
+    "db:copy:hosted": "node database/copy_hosted_data.js",
+    "storage:migrate": "node database/migrate_uploaded_images.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.12.0"
+  }
+}
